@@ -12,9 +12,10 @@ public class TestBase {
 
     @BeforeClass
     public void setUp(){
-        String baseURL = "http://localhost:8080/service/";
+        String baseURL = "https://reqres.in/api/users/4";
         spec = new RequestSpecBuilder()
                 .setBaseUri(baseURL)
+                .setContentType(ContentType.XML)
                 .setContentType(ContentType.JSON)
                 .addFilter(new RequestLoggingFilter())
                 .addFilter(new ResponseLoggingFilter())
