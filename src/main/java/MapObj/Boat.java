@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class MyPair {
-        private String firstName;
-        private String secondName;
+public class Boat {
+    private String name;
+    private String type;
 }

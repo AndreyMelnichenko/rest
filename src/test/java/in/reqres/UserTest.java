@@ -1,23 +1,25 @@
 package in.reqres;
 
+import ListObj.BoatRS;
 import MapObj.MyPair;
 import MapObj.MyPairRS;
 import XML.People;
 import XML.PersonUtil;
 import XML.UserXml;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hashcode.TestBase;
 import org.testng.annotations.Test;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 
 import static io.restassured.RestAssured.given;
-import static io.restassured.RestAssured.post;
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertNotNull;
-import static org.testng.Assert.assertTrue;
+import static org.testng.Assert.*;
 
 public class UserTest extends TestBase {
     String urlUser = "https://reqres.in/api/users/4";
+
 
     @Test
     public void checkUser(){
@@ -129,5 +131,27 @@ public class UserTest extends TestBase {
         HashMap<MyPair, String> expectedMap = new HashMap<>();
         expectedMap.put(new MyPair("Abbott", "Costello"), "Comedy");
         assertEquals(pairRS.getMap(), expectedMap);
+    }
+
+    @Test
+    public void getListOfObject(){
+        BoatRS boatRS = given().spec(spec)
+                .expect().statusCode(200)
+                .when()
+                .get("http://localhost:8080/service/detail/json/boats-cars")
+                .as(BoatRS.class);
+
+    }
+
+    @Test
+    public void getdateFromFile() throws IOException {
+        BoatRS expectedBoat = readExpectedResult("boat.json", BoatRS.class);
+        BoatRS boatRS = given().spec(spec)
+                .expect().statusCode(200)
+                .when()
+                .get("http://localhost:8080/service/detail/json/boats-cars")
+                .as(BoatRS.class);
+        assertEquals(expectedBoat, boatRS);
+
     }
 }
