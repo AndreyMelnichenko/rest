@@ -1,10 +1,16 @@
 package XML;
 
-import javax.xml.bind.annotation.XmlRootElement;
+import lombok.Data;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
 import java.util.List;
 
-@lombok.Data
-@XmlRootElement(name="people")
+@Data
+@XmlAccessorType(XmlAccessType.FIELD)
 public class People {
-    private List<UserXml> person;
+
+    @XmlElement(name="person_root")
+    private List<UserXml> people;
 }

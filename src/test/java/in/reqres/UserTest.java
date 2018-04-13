@@ -1,6 +1,7 @@
 package in.reqres;
 
 import XML.People;
+import XML.PersonUtil;
 import XML.UserXml;
 import com.hashcode.TestBase;
 import org.testng.annotations.Test;
@@ -103,10 +104,12 @@ public class UserTest extends TestBase {
                 .when()
                 .get("http://localhost:8080/service/persons/xml")
                 .thenReturn().as(People.class);
-        Data expectedPeople = PersonUtil.getData("20","Sara","Stevens","dev@hascode.com");
-
+        UserXml expectedPeople = PersonUtil.getUser("20","Sara","Stevens","dev@hascode.com");
+        actualPeople.getPeople().get(0);
         boolean matched = false;
-        for(UserXml userXml:actualPeople.getPerson()){
+        for(UserXml userXml:actualPeople.getPeople()){
+            System.out.println("-----------\n"+userXml+"\n--------------");
+            System.out.println(expectedPeople);
             matched=userXml.equals(expectedPeople);
             if (matched){
                 break;
