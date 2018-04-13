@@ -1,10 +1,14 @@
 package in.reqres;
 
+import MapObj.MyPair;
+import MapObj.MyPairRS;
 import XML.People;
 import XML.PersonUtil;
 import XML.UserXml;
 import com.hashcode.TestBase;
 import org.testng.annotations.Test;
+
+import java.util.HashMap;
 
 import static io.restassured.RestAssured.given;
 import static io.restassured.RestAssured.post;
@@ -104,17 +108,26 @@ public class UserTest extends TestBase {
                 .when()
                 .get("http://localhost:8080/service/persons/xml")
                 .thenReturn().as(People.class);
-        UserXml expectedPeople = PersonUtil.getUser("20","Sara","Stevens","dev@hascode.com");
-        actualPeople.getPeople().get(0);
+        UserXml expectedPeople = PersonUtil.getUser("Sara","Stevens","20","dev@hascode.com");
         boolean matched = false;
         for(UserXml userXml:actualPeople.getPeople()){
-            System.out.println("-----------\n"+userXml+"\n--------------");
-            System.out.println(expectedPeople);
             matched=userXml.equals(expectedPeople);
             if (matched){
                 break;
             }
         }
         assertTrue(matched);
+    }
+
+    @Test
+    public void testGetJsonMapKeyAndValue() {
+        MyPairRS pairRS = given().spec(spec).
+                expect().
+                statusCode(200).
+                when().
+                get("http://localhost:8080/service/detail/json/map").as(MyPairRS.class);
+        HashMap<MyPair, String> expectedMap = new HashMap<>();
+        expectedMap.put(new MyPair("Abbott", "Costello"), "Comedy");
+        assertEquals(pairRS.getMap(), expectedMap);
     }
 }
