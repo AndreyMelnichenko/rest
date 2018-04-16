@@ -57,7 +57,7 @@ public class EpayTest extends TestBase {
 
     @Test (priority = 4, groups = {"token"})
     public void getToken(){
-        
+        System.out.println(activationId+"======="+appKey);
     }
 
 }
