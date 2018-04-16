@@ -8,11 +8,14 @@ import XML.PersonUtil;
 import XML.UserXml;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hashcode.TestBase;
+import io.restassured.builder.RequestSpecBuilder;
+import io.restassured.specification.RequestSpecification;
 import org.testng.annotations.Test;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Map;
 
 import static io.restassured.RestAssured.given;
 import static org.testng.Assert.*;
