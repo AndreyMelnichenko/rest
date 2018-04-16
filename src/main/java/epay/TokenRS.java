@@ -8,11 +8,10 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class PinRK {
-    @JsonProperty("AppKey")
-    private String appKey;
-    @JsonProperty("OldPin")
-    private String oldPin;
-    @JsonProperty("NewPin")
-    private String newPin;
+public class TokenRS {
+    private TokenResultFields tokenResultFields;
+    @JsonProperty("Uid")
+    private String uid;
+    @JsonProperty("Errors")
+    private String errors;
 }

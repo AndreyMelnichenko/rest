@@ -8,6 +8,8 @@ import static io.restassured.RestAssured.given;
 public class EpayTest extends TestBase {
     private static String activationId;
     private static String appKey;
+    private static String uid;
+    private static String pin;
 
     @Test(priority=1, groups = {"user"})
     public void createUser(){
@@ -16,13 +18,14 @@ public class EpayTest extends TestBase {
                 .header("Content-Type","application/json")
                 .header("Accept-Language", "en")
                 .header("User-Agent","JetBeepApp/0.5")
-                .header("X-App-ID","35009a79-1a05-49d7-b876-2b884d0f825b")
+                .header("X-App-ID","00000000-0000-0000-0000-000000000000")
                 .spec(spec).body(createUserRK)
                 .expect().statusCode(200)
                 .when()
                 .post("https://jetbeeptest.easypay.ua:8195/api/appkey/Create")
                 .thenReturn().as(CreateUserRS.class);
         activationId=actualUser.getResult().getActivationId();
+        uid=actualUser.getUid();
     }
     @Test(priority=2, groups = {"user"})
     public void activateUser(){
@@ -31,33 +34,47 @@ public class EpayTest extends TestBase {
                 .header("Content-Type","application/json")
                 .header("Accept-Language", "en")
                 .header("User-Agent","JetBeepApp/0.5")
-                .header("X-App-ID","35009a79-1a05-49d7-b876-2b884d0f825b")
+                .header("X-App-ID",uid)
                 .spec(spec).body(activationUser)
                 .expect().statusCode(200)
                 .when()
                 .post("https://jetbeeptest.easypay.ua:8195/api/appkey/Activate")
                 .thenReturn().as(CreateUserRS.class);
         appKey=actualUser.getResult().getAppKey();
+        uid=actualUser.getUid();
     }
     @Test(priority = 3, groups = {"user"})
     public void setPin(){
-        PinRK pinRK = new PinRK(appKey, "null","123098");
+        pin = "123098";
+        PinRK pinRK = new PinRK(appKey, null, pin);
         PinRS setPin = given()
                 .header("Content-Type","application/json")
                 .header("Accept-Language", "en")
                 .header("User-Agent","JetBeepApp/0.5")
-                .header("X-App-ID","35009a79-1a05-49d7-b876-2b884d0f825b")
+                .header("X-App-ID",uid)
                 .spec(spec).body(pinRK)
                 .expect().statusCode(200)
                 .when()
                 .post("https://jetbeeptest.easypay.ua:8195/api/AppKey/Pin/Change")
                 .thenReturn().as(PinRS.class);
-        System.out.println(setPin.getResult());
+        uid=setPin.getUid();
     }
 
     @Test (priority = 4, groups = {"token"})
     public void getToken(){
-        System.out.println(activationId+"======="+appKey);
+        TokenRK tokenRK = new TokenRK(appKey, pin);
+        TokenRS getTokenRS = given()
+                .header("Content-Type","application/json")
+                .header("Accept-Language", "en")
+                .header("User-Agent","JetBeepApp/0.5")
+                .header("X-App-ID",uid)
+                .spec(spec).body(tokenRK)
+                .expect().statusCode(200)
+                .when()
+                .post("https://jetbeeptest.easypay.ua:8195/api/Token")
+                .thenReturn().as(TokenRS.class);
+        System.out.println(getTokenRS.getTokenResultFields().getAccessToken());
+        System.out.println(getTokenRS.getTokenResultFields().getTokenType());
     }
 
 }
