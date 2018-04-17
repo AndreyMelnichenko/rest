@@ -1,6 +1,5 @@
 package epay;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -10,7 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class TokenRS {
-    @JsonIgnoreProperties(ignoreUnknown = true)
+    @JsonProperty("Result")
     private TokenResultFields tokenResultFields;
     @JsonProperty("Uid")
     private String uid;
