@@ -32,7 +32,7 @@ public class TestBase {
         String baseURL = "https://reqres.in/api/users/4";
         spec = new RequestSpecBuilder()
                 .setBaseUri(baseURL)
-                .setContentType(ContentType.XML)
+                //.setContentType(ContentType.XML)
                 .setContentType(ContentType.JSON)
                 .addFilter(new RequestLoggingFilter())
                 .addFilter(new ResponseLoggingFilter())

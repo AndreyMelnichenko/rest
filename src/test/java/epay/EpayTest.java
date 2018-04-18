@@ -1,15 +1,27 @@
 package epay;
 
 import com.hashcode.TestBase;
+import io.github.bonigarcia.wdm.ChromeDriverManager;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.annotations.Test;
 
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+
 import static io.restassured.RestAssured.given;
+import static org.openqa.selenium.remote.BrowserType.CHROME;
 
 public class EpayTest extends TestBase {
-    private static String activationId;
-    private static String appKey;
-    private static String uid;
-    private static String pin;
+    private static String activationId, appKey, uid, pin, accessToken, tokenType, accountNumber;
+    private WebDriver driver;
+    //private String browser = System.getProperty(CHROME);
+    private By acceptKye = By.xpath("//button[@class='btn-green']");
+
 
     @Test(priority=1, groups = {"user"})
     public void createUser(){
@@ -73,8 +85,45 @@ public class EpayTest extends TestBase {
                 .when()
                 .post("https://jetbeeptest.easypay.ua:8195/api/Token")
                 .thenReturn().as(TokenRS.class);
-        System.out.println(getTokenRS.getTokenResultFields().getAccessToken());
-        System.out.println(getTokenRS.getTokenResultFields().getTokenType());
+        accessToken=getTokenRS.getTokenResultFields().getAccessToken();
+        tokenType=getTokenRS.getTokenResultFields().getTokenType();
+    }
+
+    @Test(priority = 5, groups = {"token"})
+    public void getAccounts(){
+        Accounts accounts=given()
+                .header("Content-Type","application/json")
+                .header("Accept-Language", "en")
+                .header("User-Agent","JetBeepApp/0.5")
+                .header("X-App-ID",uid)
+                .header("Authorization",tokenType+" "+accessToken)
+                .spec(spec)
+                .expect().statusCode(200)
+                .when()
+                .get("https://jetbeeptest.easypay.ua:8195/api/Accounts")
+                .thenReturn().as(Accounts.class);
+        accountNumber=accounts.getResult().get(0).getAccountNumber();
+    }
+
+    @Test(priority = 6, groups = {"token"})
+    public void getSasMoney() {
+        String url ="https://sastest.easypay.ua:8193/payment/card?wallet="+accountNumber+"&amount=1.00";
+        ChromeDriverManager.getInstance().setup();
+        driver = new ChromeDriver();
+        driver.get(url);
+        driver.findElement(acceptKye).click();
+        driver.quit();
+        Movements movements = given()
+                .header("Content-Type","application/json")
+                .header("Accept-Language", "en")
+                .header("User-Agent","JetBeepApp/0.5")
+                .header("X-App-ID",uid)
+                .header("Authorization",tokenType+" "+accessToken)
+                .spec(spec)
+                .expect().statusCode(200)
+                .when()
+                .get("https://jetbeeptest.easypay.ua:8195/api/Accounts/"+accountNumber+"/Movements")
+                .as(Movements.class);
     }
 
 }
