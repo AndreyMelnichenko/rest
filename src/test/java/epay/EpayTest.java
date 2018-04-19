@@ -4,17 +4,10 @@ import com.hashcode.TestBase;
 import io.github.bonigarcia.wdm.ChromeDriverManager;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.annotations.Test;
 
-import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-
 import static io.restassured.RestAssured.given;
-import static org.openqa.selenium.remote.BrowserType.CHROME;
 
 public class EpayTest extends TestBase {
     private static String activationId, appKey, uid, pin, accessToken, tokenType, accountNumber;

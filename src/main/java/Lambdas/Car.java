@@ -4,11 +4,11 @@ import lombok.AllArgsConstructor;
 import java.util.Comparator;
 
 @AllArgsConstructor
-public class Car /*implements Comparator*/ {
+public class Car implements Comparator {
     int price;
     String brand;
 
-/*    @Override
+    @Override
     public int compare(Object o1, Object o2) {
         Car o21 = (Car) o1;
         Car o11 = (Car) o2;
@@ -19,7 +19,7 @@ public class Car /*implements Comparator*/ {
         } else {
             return 0;
         }
-    }*/
+    }
 
     @Override
     public String toString() {

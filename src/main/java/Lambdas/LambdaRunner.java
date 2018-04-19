@@ -19,23 +19,40 @@ public class LambdaRunner {
         Car car2 = new Car(44, "Ford");
 
         Car[] cars = {car, car1, car2};
-
-        //Arrays.sort(cars, car::compare);
+        Arrays.sort(cars, car::compare);
         System.out.println(Arrays.toString(cars));
 
-        System.out.println("=======================================");
-        Comparator carComparator = (o1, o2) -> {
-            Car o21 = (Car) o1;
-            Car o11 = (Car) o2;
-            if (o11.price > o21.price) {
+        System.out.println("======================================");
+
+        House house = new House(600000, "Kennedy");
+        House house1 = new House(100000,"Klinton");
+        House house2 = new House(150000, "Trump");
+
+        House[] houses = {house, house1, house2};
+
+        Comparator houseComparator = (o1, o2) -> {
+            House o21 = (House) o1;
+            House o11 = (House) o2;
+            if (o11.getPrice() > o21.getPrice()) {
                 return -1;
-            } else if (o11.price < o21.price) {
+            } else if (o11.getPrice() < o21.getPrice()) {
                 return 1;
             } else {
                 return 0;
             }
         };
-        Arrays.sort(cars, carComparator);
-        System.out.println(Arrays.toString(cars));
+        Arrays.sort(houses, houseComparator);
+        System.out.println(Arrays.toString(houses));
+        System.out.println("======================================");
+        Sayable sayable = SayService::saySomething;
+        sayable.say();
+        System.out.println("======================================");
+        Sayable sayConstructor = SayService::new;
+        sayConstructor.say();
+        System.out.println("======================================");
+        SayService sayService = new SayService();
+        Sayable sayable1 = sayService::saySomethingMethod;
+        System.out.println("======================================");
+        sayable1.say();
     }
 }
