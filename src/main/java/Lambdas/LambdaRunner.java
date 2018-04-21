@@ -12,6 +12,10 @@ public class LambdaRunner {
         GetMessage print = (message) ->
                 System.out.println("Hello " + message);
         print.getText("Java 8");
+        System.out.println("======================================");
+
+        Sayable sayableVoid = ()-> System.out.println("void message");
+        sayableVoid.say();
 
         System.out.println("======================================");
         Car car = new Car(123, "BMW");
@@ -54,5 +58,14 @@ public class LambdaRunner {
         Sayable sayable1 = sayService::saySomethingMethod;
         System.out.println("======================================");
         sayable1.say();
+        System.out.println("======================================");
+        Chair chair = new Chair(15,"Yellow");
+        Chair chair1 = new Chair(11, "Red");
+        Chair chair2 = new Chair(41, "Black");
+        Chair[] chairs = {chair2,chair,chair1};
+        Arrays.sort(chairs, (o1, o2) -> {if (o1.price>o2.price) return 1;
+            if (o1.price<o2.price)return  -1;
+            return 0;});
+        System.out.println(Arrays.toString(chairs));
     }
 }
