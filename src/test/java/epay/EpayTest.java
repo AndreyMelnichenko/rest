@@ -12,7 +12,6 @@ import static io.restassured.RestAssured.given;
 public class EpayTest extends TestBase {
     private static String activationId, appKey, uid, pin, accessToken, tokenType, accountNumber;
     private WebDriver driver;
-    //private String browser = System.getProperty(CHROME);
     private By acceptKye = By.xpath("//button[@class='btn-green']");
 
 

@@ -3,6 +3,7 @@ package Lambdas;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class StreamTest {
@@ -29,5 +30,14 @@ public class StreamTest {
                 .collect(Collectors.toList());
 
         System.out.println(filtredList.toString());
+
+        Optional<Employee> anyMale = persons.stream()
+                .filter(Employee::isMale)
+                .findAny();
+        if(anyMale.isPresent()){
+            System.out.println("Amy male"+anyMale.get());
+        } else {
+            System.out.println("No any Male found.");
+        }
     }
 }

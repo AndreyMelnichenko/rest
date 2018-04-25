@@ -15,7 +15,10 @@ import org.testng.annotations.Test;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static io.restassured.RestAssured.given;
 import static org.testng.Assert.*;
@@ -155,6 +158,23 @@ public class UserTest extends TestBase {
                 .get("http://localhost:8080/service/detail/json/boats-cars")
                 .as(BoatRS.class);
         assertEquals(expectedBoat, boatRS);
+
+    }
+
+    @Test
+    public void getLyambdaUsers(){
+        Users actualUsers = given().spec(spec)
+                .expect()
+                .statusCode(200)
+                .when()
+                .get("https://reqres.in/api/users?pages=2")
+                .thenReturn().as(Users.class);
+        Optional<Data> dataExpected = actualUsers.getData().stream()
+                .filter(User->User.getFirstName().equals("George"))
+                .findAny();
+
+        assertTrue(dataExpected.isPresent());
+        System.out.println(dataExpected.toString());
 
     }
 }
