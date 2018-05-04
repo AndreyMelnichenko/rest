@@ -1,0 +1,44 @@
+#%RAML 1.0
+title: test-server
+version: "1"
+baseUri:
+documentation:
+ - title: Home
+   content: |
+
+description: Music Resource
+/music:
+    displayName: Music Resource
+    description: Music Resource
+    get:
+        description: getMusicLibrary
+        queryParameters:
+            id:
+                description: getMusicLibrary
+                displayName: id
+                type: integer
+                required: true
+        responses:
+            "200": 
+                description: Successful Response
+                body: 
+                    application/json: 
+                        schema: |
+                            {
+                              "type" : "object",
+                              "id" : "urn:jsonschema:com:testserver:model:Music",
+                              "properties" : {
+                                "id" : {
+                                  "type" : "integer"
+                                },
+                                "name" : {
+                                  "type" : "string"
+                                },
+                                "trackList" : {
+                                  "type" : "array",
+                                  "items" : {
+                                    "type" : "string"
+                                  }
+                                }
+                              }
+                            }

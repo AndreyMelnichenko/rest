@@ -177,4 +177,15 @@ public class UserTest extends TestBase {
         System.out.println(dataExpected.toString());
 
     }
+
+    @Test
+    public void getShortTest(){
+        Users actualUser = getResource("https://reqres.in/api/users?pages=2",200, Users.class);
+        Optional<Data> dataExpected = actualUser.getData().stream()
+                .filter(User->User.getFirstName().equals("George"))
+                .findAny();
+
+        assertTrue(dataExpected.isPresent());
+        System.out.println(dataExpected.toString());
+    }
 }

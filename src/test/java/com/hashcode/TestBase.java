@@ -1,6 +1,8 @@
 package com.hashcode;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import in.reqres.Users;
+import io.restassured.RestAssured;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.filter.log.RequestLoggingFilter;
 import io.restassured.filter.log.ResponseLoggingFilter;
@@ -12,6 +14,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
+
+import static io.restassured.RestAssured.given;
 
 public class TestBase {
     protected RequestSpecification spec;
@@ -37,5 +41,14 @@ public class TestBase {
                 .addFilter(new RequestLoggingFilter())
                 .addFilter(new ResponseLoggingFilter())
                 .build();
+    }
+
+    protected <T> T getResource(String location, int secOk, Class<T> responseClass){
+        return RestAssured.given().spec(spec)
+                .expect()
+                .statusCode(secOk)
+                .when()
+                .get(location)
+                .thenReturn().as(responseClass);
     }
 }
