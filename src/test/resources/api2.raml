@@ -42,3 +42,38 @@ description: Music Resource
                                 }
                               }
                             }
+/car:
+    displayName: Car Resource
+    description: Car Resource
+    get:
+        description: getCarLibrary
+        queryParameters:
+            id:
+                description: getCarLibrary
+                displayName: id
+                type: integer
+                required: true
+        responses:
+            "200":
+                description: Successful Response
+                body:
+                    application/json:
+                        schema: |
+                            {
+                              "type" : "object",
+                              "id" : "urn:jsonschema:com:testserver:model:Car",
+                              "properties" : {
+                                "id" : {
+                                  "type" : "integer"
+                                },
+                                "brand" : {
+                                  "type" : "string"
+                                },
+                                "model" : {
+                                  "type" : "array",
+                                  "items" : {
+                                    "type" : "string"
+                                  }
+                                }
+                              }
+                            }
